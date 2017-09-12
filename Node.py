@@ -1,42 +1,54 @@
-from board import Board
+import board as wrapper
 
-class Node():
+
+class Node:
     h = 0
     g = 0
     f = 0
-    wrapper = Board()
     id = "todo"
 
     parent = "some node"
     children = []
+
+
+    def __init__(self, id, root):
+        if root:
+            self.id = id
+            g = 0
+            h = self.calculate_h()
+            f = h + g
+        else:
+            self.id = id
 
     def attach_and_eval(self, parent):
         h = self.calculate_h()
         g = parent.g + self.arc_cost(parent)
         f = h + g
         self.parent = parent
-        parent.children.insert(self)
+        parent.children.append(self)
 
     def generate_successors(self):
-        # todo
+        successor_ids = wrapper.generate_successors(self.id)
+        successors = []
+        for id in successor_ids:
+            successors.append(Node(id, False))
         return successors
 
-    def calculate_h(self, node):
-        # TODO
-        return distance_estimate
+    def calculate_h(self):
+        return wrapper.calculate_h(self.id)
 
     def propagate_improvement(self):
-        self.g = self.parent.g + self.arc_cost()
+        self.g = self.parent.g + self.arc_cost(self.parent)
         self.f = self.g + self.h
-        if not node.children:
+        if not self.children:
             return
         else:
             for child in self.children:
                 arc_cost = self.arc_cost(child)
-                self.propagate_improvement(child, arc_cost)
+                self.propagate_improvement(child)
 
     def arc_cost(self, node):
-        return 1
+        return wrapper.arc_cost(self, node)
 
     def is_solution(self):
-        return wrapper_class.is_solution
+        return wrapper.is_solution(self.id)

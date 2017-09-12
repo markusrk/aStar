@@ -14,9 +14,12 @@ RAND3 = (0, 0, 200)
 RAND4 = (0, 0, 255)
 RAND5 = (55, 55, 55)
 RAND6 = (0, 40, 40)
-RAND7 = (0, 80, 80)
+RAND7 = (0, 160, 80)
+RAND8 = (0, 120, 120)
+RAND9 = (0, 80, 120)
+RAND10 = (0, 120, 80)
 
-color_scheme = [RED, BLUE, BLACK, GREEN, RAND1, RAND2, RAND3, RAND4, RAND5, RAND6, RAND7]
+color_scheme = [RED, BLUE, BLACK, GREEN, RAND1, RAND2, RAND3, RAND4, RAND5, RAND6, RAND7, RAND8, RAND9, RAND10]
 PI = 3.141592653
 
 size = (700, 500)
@@ -31,17 +34,10 @@ done = False
 clock = pygame.time.Clock()
 
 # load some boards, only for testing
-boards = []
-board1 = board.load_file('easy-3.txt')
-boards.append(board.id_to_board( board.load_file('easy-3.txt')))
-boards.append(board.id_to_board(  board.load_file('medium-1.txt')))
-boards.append(board.id_to_board( board.load_file('easy-3.txt')))
-boards.append(board.id_to_board(  board.load_file('medium-1.txt')))
-boards.append(board.id_to_board( board.load_file('easy-3.txt')))
-boards.append(board.id_to_board(  board.load_file('medium-1.txt')))
 i = 0
 
-legal_test_boards = board.legal_moves(board.load_file('easy-3.txt'))
+legal_test_boards = board.generate_successors(board.load_file('hard-3.txt'))
+legal_test_boards.insert(0,board.id_to_board( board.load_file('hard-3.txt')))
 boards = legal_test_boards
 
 def draw_board(board):
@@ -95,7 +91,7 @@ while not done:
                 i = i - 1
             if event.key == pygame.K_RIGHT:
                 i = i + 1
-                
+
     draw_board(boards[i])
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()

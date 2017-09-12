@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-def check_solution(id):
+def is_solution(id):
     cars = id_to_board(id)
 
     if cars[0][1] == 4:
@@ -50,7 +50,7 @@ def load_file(filename):
     id = board_to_id(id)
     return id
 
-def legal_moves(id):
+def generate_successors(id):
     cars = id_to_board(id)
 
     # Make map of where cars are present
@@ -84,11 +84,16 @@ def legal_moves(id):
                 new_cars[x][2] = new_cars[x][2]-1
                 legal_boards.append(deepcopy(new_cars))
                 new_cars[x][2] = new_cars[x][2] + 1
-            if x_pos+length < 6 and board[y_pos+length][x_pos] == 0:
+            if y_pos+length < 6 and board[y_pos+length][x_pos] == 0:
                 new_cars[x][2] = new_cars[x][2]+1
                 legal_boards.append(deepcopy(new_cars))
                 new_cars[x][2] = new_cars[x][2] - 1
-    return legal_boards
+
+    # convert to strings
+    strings_of_successors = []
+    for board in legal_boards:
+        strings_of_successors.append(board_to_id(board))
+    return strings_of_successors
 
 
 def make_taken_board(cars):
@@ -111,3 +116,6 @@ def make_taken_board(cars):
                 board[y_pos + 2][x_pos] = 1
 
     return board
+
+def arc_cost(board1, board2):
+    return 1
