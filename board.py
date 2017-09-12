@@ -8,6 +8,14 @@ def check_solution(id):
     else:
         return False
 
+def calculate_h(id):
+    cars = id_to_board(id)
+    board = make_taken_board(cars)
+    h = 4-cars[0][1]
+    for i in range(cars[0][1]+2,5):
+        if board[2][i] == 1:
+            h += 1
+    return h
 
 def file_to_board(id):
     cars = []
@@ -46,22 +54,8 @@ def legal_moves(id):
     cars = id_to_board(id)
 
     # Make map of where cars are present
-    board = [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]
-    for car in cars:
-        x_pos = car[1]
-        y_pos = car[2]
-        orientation = car[0]
-        length = car[3]
-        if orientation == 0:
-            board[y_pos][x_pos] = 1
-            board[y_pos][x_pos+1] = 1
-            if length == 3:
-                board[y_pos][x_pos+2] = 1
-        if orientation == 1:
-            board[y_pos][x_pos] = 1
-            board[y_pos + 1][x_pos] = 1
-            if length == 3:
-                board[y_pos + 2][x_pos] = 1
+    board = make_taken_board(cars)
+
 
     # Make list of legal moves for each car
     legal_boards = []
@@ -95,3 +89,25 @@ def legal_moves(id):
                 legal_boards.append(deepcopy(new_cars))
                 new_cars[x][2] = new_cars[x][2] - 1
     return legal_boards
+
+
+def make_taken_board(cars):
+    board = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0]]
+    for car in cars:
+        x_pos = car[1]
+        y_pos = car[2]
+        orientation = car[0]
+        length = car[3]
+        if orientation == 0:
+            board[y_pos][x_pos] = 1
+            board[y_pos][x_pos + 1] = 1
+            if length == 3:
+                board[y_pos][x_pos + 2] = 1
+        if orientation == 1:
+            board[y_pos][x_pos] = 1
+            board[y_pos + 1][x_pos] = 1
+            if length == 3:
+                board[y_pos + 2][x_pos] = 1
+
+    return board

@@ -95,6 +95,7 @@ while not done:
                 i = i - 1
             if event.key == pygame.K_RIGHT:
                 i = i + 1
+                
     draw_board(boards[i])
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
