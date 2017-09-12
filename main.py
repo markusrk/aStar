@@ -33,14 +33,12 @@ clock = pygame.time.Clock()
 # load some boards, only for testing
 boards = []
 board1 = board.load_file('easy-3.txt')
-boards.append(board.load_file('easy-3.txt'))
-boards.append(board.load_file('medium-1.txt'))
-boards.append(board.load_file('easy-3.txt'))
-boards.append(board.load_file('medium-1.txt'))
-boards.append(board.load_file('easy-3.txt'))
-boards.append(board.load_file('medium-1.txt'))
-boards.append(board.load_file('easy-3.txt'))
-boards.append(board.load_file('medium-1.txt'))
+boards.append(board.id_to_board( board.load_file('easy-3.txt')))
+boards.append(board.id_to_board(  board.load_file('medium-1.txt')))
+boards.append(board.id_to_board( board.load_file('easy-3.txt')))
+boards.append(board.id_to_board(  board.load_file('medium-1.txt')))
+boards.append(board.id_to_board( board.load_file('easy-3.txt')))
+boards.append(board.id_to_board(  board.load_file('medium-1.txt')))
 i = 0
 
 legal_test_boards = board.legal_moves(board.load_file('easy-3.txt'))
@@ -63,6 +61,11 @@ def draw_board(board):
             for i in range(0, length):
                 pygame.draw.rect(screen, color_scheme[x],
                                  [x_pos * box_size, y_pos * box_size + i * box_size, box_size, box_size])
+    pygame.draw.line(screen, BLACK, [0, 0], [box_size*6, 0], 5)
+    pygame.draw.line(screen, BLACK, [0, 0], [0, box_size*6], 5)
+    pygame.draw.line(screen, BLACK, [box_size*6, 0], [box_size*6, box_size*2], 5)
+    pygame.draw.line(screen, BLACK, [box_size * 6, box_size*3], [box_size * 6, box_size * 6], 5)
+    pygame.draw.line(screen, BLACK, [0, box_size*6], [box_size*6, box_size*6], 5)
     pygame.display.flip()
 
 

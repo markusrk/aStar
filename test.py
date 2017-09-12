@@ -1,6 +1,7 @@
 import board
 
-board.legal_moves(board.load_file('easy-3.txt'))
+print (len(board.legal_moves(board.load_file('easy-3.txt'))))
+
 
 #print ((board.id_to_board(board.load_file('medium-1.txt'))))
 
