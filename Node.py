@@ -7,18 +7,20 @@ class Node:
     f = 0
     id = "todo"
 
-    parent = "some node"
+    parent = "not initialized"
     children = []
 
 
-    def __init__(self, id, root):
-        if root:
+    def __init__(self, id, parent):
+        if parent == True:
             self.id = id
             g = 0
             h = self.calculate_h()
             f = h + g
+            self.parent = self
         else:
             self.id = id
+            self.parent = parent
 
     def attach_and_eval(self, parent):
         h = self.calculate_h()
@@ -31,7 +33,7 @@ class Node:
         successor_ids = wrapper.generate_successors(self.id)
         successors = []
         for id in successor_ids:
-            successors.append(Node(id, False))
+            successors.append(Node(id, self))
         return successors
 
     def calculate_h(self):
@@ -45,7 +47,7 @@ class Node:
         else:
             for child in self.children:
                 arc_cost = self.arc_cost(child)
-                self.propagate_improvement(child)
+                child.propagate_improvement()
 
     def arc_cost(self, node):
         return wrapper.arc_cost(self, node)

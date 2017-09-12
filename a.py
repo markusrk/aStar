@@ -6,14 +6,14 @@ import board as wrapper
 class A():
     closed = {}
     opened = []
-    all_nodes = {}
+    all_nodes = {} #except root
     iw = None
 
     def run(self):
         # todo load code
         root_node = Node(wrapper.load_file('easy-3.txt'), True)
         self.opened.append(root_node)
-        self.all_nodes.update( {root_node.id:root_node})
+        self.all_nodes.update({root_node.id:root_node})
 
         while True:
             # check if open is empty and fail it it is.
@@ -35,10 +35,11 @@ class A():
                     if successor not in self.opened and successor.id not in self.closed:
                         successor.attach_and_eval(current_node)
                         self.opened.append(successor)
+                        self.all_nodes.update({successor.id:successor})
 
                     # if successor does exist, update distance and parent
                     else:
-                        identical_node = self.find_identical(successor)
+                        identical_node = self.find_identical(self,successor)
                         if identical_node.f < successor.f:
                             continue
                         else:
@@ -47,6 +48,7 @@ class A():
                             identical_node.parent = successor.parent
                             if identical_node.id in self.closed:
                                 identical_node.propagate_improvement()
+                self.closed.update({current_node.id:current_node})
 
     def find_identical(self,node):
         return self.all_nodes[node.id]
