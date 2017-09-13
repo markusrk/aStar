@@ -9,10 +9,13 @@ class A():
     all_nodes = {} #except root
     iw = None
     final_node = "not filled yet"
+    no_of_moves = 0
+    max_size_search_tree = 0
 
     def run(self):
         # todo load code
-        root_node = Node(wrapper.load_file('expert-2.txt'), True)
+        root_node = Node(wrapper.load_file('expert-2'
+                                           '.txt'), True)
         self.opened.append(root_node)
         self.all_nodes.update({root_node.id:root_node})
 
@@ -25,6 +28,7 @@ class A():
                 # pop node from open and check if it is a solution
                 current_node = self.opened.pop(0)
                 self.closed.update({current_node.id:current_node})
+                if len(self.closed) > self.max_size_search_tree: self.max_size_search_tree = len(self.closed)
                 if current_node.is_solution():
                     self.final_node = current_node
                     break
@@ -52,20 +56,16 @@ class A():
                             identical_node.attach_and_eval(current_node)
                             if identical_node.id in self.closed:
                                 identical_node.propagate_improvement()
-                self.closed.update({current_node.id:current_node})
 
         print('we succeeded')
         list_of_nodes = []
         while self.final_node.parent and self.final_node != self.final_node.parent:
             list_of_nodes.append(self.final_node.id)
             self.final_node = self.final_node.parent
+            self.no_of_moves += 1
+        print('No of moves = ' + str(self.no_of_moves))
+        print('max number of nodes = ' + str(self.max_size_search_tree))
         return list_of_nodes
-
-    #def success(self, node):
-     #   print("we succeeded")
-      #  return
-        # todo signal that A* has found a solution and is ending
-        # Make sure to break loop somehow
 
 
     def find_identical(self,node):
