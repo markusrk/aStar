@@ -2,30 +2,25 @@ import board as wrapper
 
 
 class Node:
-    h = 0
-    g = 0
-    f = 0
-    id = "todo"
-
-    parent = "not initialized"
-    children = []
 
 
     def __init__(self, id, parent):
         if parent == True:
             self.id = id
-            g = 0
-            h = self.calculate_h()
-            f = h + g
+            self.g = 0
+            self.h = self.calculate_h()
+            self.f = self.h + self.g
             self.parent = self
+            self.children = []
         else:
             self.id = id
             self.parent = parent
+            self.children = []
 
     def attach_and_eval(self, parent):
-        h = self.calculate_h()
-        g = parent.g + self.arc_cost(parent)
-        f = h + g
+        self.h = self.calculate_h()
+        self.g = parent.g + self.arc_cost(parent)
+        self.f = self.h + self.g
         self.parent = parent
         parent.children.append(self)
 

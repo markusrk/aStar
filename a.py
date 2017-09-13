@@ -8,6 +8,7 @@ class A():
     opened = []
     all_nodes = {} #except root
     iw = None
+    final_node = "not filled yet"
 
     def run(self):
         # todo load code
@@ -25,14 +26,17 @@ class A():
                 current_node = self.opened.pop(0)
                 self.closed.update({current_node.id:current_node})
                 if current_node.is_solution():
-                    self.success(current_node)
+                    self.final_node = current_node
+                    break
 
                 # generate and insert successors
                 successors = current_node.generate_successors()
                 for successor in successors:
 
                     # if successor does not exist, insert it in open and attach to parent
-                    if successor not in self.opened and successor.id not in self.closed:
+                    if successor.id not in self.all_nodes:
+                        if successor.id == current_node.id:
+                            print("we have trouble")
                         successor.attach_and_eval(current_node)
                         self.opened.append(successor)
                         self.all_nodes.update({successor.id:successor})
@@ -40,22 +44,32 @@ class A():
                     # if successor does exist, update distance and parent
                     else:
                         identical_node = self.find_identical(self,successor)
-                        if identical_node.f < successor.f:
+                        if identical_node.g < current_node.g + current_node.arc_cost(identical_node):
                             continue
                         else:
+                            if identical_node.id == current_node.id:
+                                print("we have trouble")
                             identical_node.attach_and_eval(current_node)
-                            identical_node.f = successor.f
-                            identical_node.parent = successor.parent
                             if identical_node.id in self.closed:
                                 identical_node.propagate_improvement()
                 self.closed.update({current_node.id:current_node})
 
+        print('we succeeded')
+        list_of_nodes = []
+        while self.final_node.parent and self.final_node != self.final_node.parent:
+            list_of_nodes.append(self.final_node.id)
+            self.final_node = self.final_node.parent
+        return list_of_nodes
+
+    #def success(self, node):
+     #   print("we succeeded")
+      #  return
+        # todo signal that A* has found a solution and is ending
+        # Make sure to break loop somehow
+
+
     def find_identical(self,node):
         return self.all_nodes[node.id]
 
-    def success(self, node):
-        print("we succeeded")
-        # todo signal that A* has found a solution and is ending
-        # Make sure to break loop somehow
 
 

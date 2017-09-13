@@ -1,5 +1,6 @@
 import pygame
-import board
+import board as wrapper
+from a import A
 
 pygame.init()
 
@@ -36,11 +37,15 @@ clock = pygame.time.Clock()
 # load some boards, only for testing
 i = 0
 
-legal_test_boards = board.generate_successors(board.load_file('hard-3.txt'))
-legal_test_boards.insert(0,board.id_to_board( board.load_file('hard-3.txt')))
-boards = legal_test_boards
+#legal_test_boards = board.generate_successors(board.load_file('hard-3.txt'))
+#legal_test_boards.insert(0,board.id_to_board( board.load_file('hard-3.txt')))
+a = A
+boards = a.run(a)
+print(boards)
 
 def draw_board(board):
+    if isinstance(board, str):
+        board = wrapper.id_to_board(board)
     for x in range(len(board)):
         car = board[x]
         box_size = 50
