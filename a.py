@@ -12,7 +12,7 @@ class A():
 
     def run(self):
         # todo load code
-        root_node = Node(wrapper.load_file('easy-3.txt'), True)
+        root_node = Node(wrapper.load_file('expert-2.txt'), True)
         self.opened.append(root_node)
         self.all_nodes.update({root_node.id:root_node})
 
