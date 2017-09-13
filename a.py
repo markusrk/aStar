@@ -14,8 +14,7 @@ class A():
 
     def run(self):
         # todo load code
-        root_node = Node(wrapper.load_file('expert-2'
-                                           '.txt'), True)
+        root_node = Node(wrapper.load_file('expert-2.txt'), True)
         self.opened.append(root_node)
         self.all_nodes.update({root_node.id:root_node})
 
@@ -24,6 +23,9 @@ class A():
             if not self.opened:
                 print("open list is empty, failed to find a solution")
             else:
+
+                # Sort opened list
+                self.opened.sort(key=lambda x: x.f, reverse=False)
 
                 # pop node from open and check if it is a solution
                 current_node = self.opened.pop(0)
