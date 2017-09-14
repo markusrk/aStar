@@ -3,7 +3,9 @@ from a import A
 import Node
 from Nonogram import Nonogram
 
-print (Nonogram.load_file("Nonogram_boards/nono-cat.txt"))
+
+print(Nonogram.generate_line_alternatives(7,0,[3,3,]))
+#print (Nonogram.load_file("Nonogram_boards/nono-cat.txt"))
 
 
 
