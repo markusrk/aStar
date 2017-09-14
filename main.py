@@ -34,7 +34,7 @@ done = False
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
-# load some boards, only for testing
+# load some boards, only for testing  
 i = 0
 
 #legal_test_boards = board.generate_successors(board.load_file('hard-3.txt'))
