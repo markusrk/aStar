@@ -10,17 +10,22 @@
 """
 
 import pygame
+from copy import deepcopy
+from Nonogram import Nonogram
 
-# Define some colors
+
+# Define some colors and fonts
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+color_scheme = [GREEN, WHITE]
+
 
 pygame.init()
 
 # Set the width and height of the screen [width, height]
-size = (700, 500)
+size = (700, 700)
 screen = pygame.display.set_mode(size)
 
 pygame.display.set_caption("My Game")
@@ -31,6 +36,31 @@ done = False
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
+
+def draw_board(x_segments, y_segments, table):
+    x_dim = len(x_segments)
+    y_dim = len(y_segments)
+    box_size = 50
+    border_size = 100
+
+    #draw boarders
+    pygame.draw.line(screen, BLACK, [border_size, border_size], [box_size * x_dim+border_size, border_size], 5)
+    pygame.draw.line(screen, BLACK, [border_size, border_size], [ border_size, box_size * y_dim+border_size], 5)
+    pygame.draw.line(screen, BLACK, [box_size * x_dim+border_size, border_size], [box_size * x_dim+border_size,y_dim*box_size+ border_size], 5)
+    pygame.draw.line(screen, BLACK, [ border_size, box_size * y_dim+border_size], [box_size * x_dim+border_size, box_size * y_dim+border_size], 5)
+
+    #draw clues will not be done currently because of bug in pygame font
+    #for x in range(0,x_dim):
+    #    text = font.render(str(x_segment), True, BLACK)
+    #    screen.blit(text, [0, border_size+x*box_size])
+
+
+    # Draw squares
+    for y in range(0,y_dim):
+        for x in range(0,x_dim):
+            pygame.draw.rect(screen, color_scheme[table[y][x]], [x * box_size + border_size, y * box_size + border_size, box_size, box_size])
+
+
 # -------- Main Program Loop -----------
 while not done:
     # --- Main event loop
@@ -39,6 +69,13 @@ while not done:
             done = True
 
     # --- Game logic should go here
+    x1, x2, x_segment, y_segment = Nonogram.load_file("Nonogram_boards/nono-cat.txt")
+    board1 = [0,1,0,1,0,1,0,1]
+    board2 = [1,0,1,0,1,0,1,0]
+
+    board = []
+    for x in range(0,x2):
+        board.append(deepcopy(board2))
 
     # --- Screen-clearing code goes here
 
@@ -50,7 +87,8 @@ while not done:
     screen.fill(WHITE)
 
     # --- Drawing code should go here
-    def draw_board(text_string,table):
+    draw_board(x_segment,y_segment,board)
+
         # Todo
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()

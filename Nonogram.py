@@ -19,3 +19,4 @@ class Nonogram():
                 y_segments.append(list(map(int,line.split(" "))))
             counter += 1
         return x_dim, y_dim, x_segments, y_segments
+
