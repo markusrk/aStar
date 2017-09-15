@@ -4,9 +4,14 @@ import Node
 from Nonogram import Nonogram
 
 
-print(Nonogram.generate_line_alternatives(7,0,[3,3,]))
-#print (Nonogram.load_file("Nonogram_boards/nono-cat.txt"))
+#print(Nonogram.pos_to_table([2,5],[2,1],6))
+block_sizes = [1,1,1,1]
+line_size = 7
 
+alternatives = Nonogram.generate_line_alternatives(line_size, 0, block_sizes)
+for alternative in alternatives:
+    print(Nonogram.pos_to_table(alternative,block_sizes,line_size))
+#print (Nonogram.load_file("Nonogram_boards/nono-cat.txt"))
 
 
 #node = Node.Node(board.load_file('easy-3.txt'),True)

@@ -25,23 +25,39 @@ class Nonogram():
             counter += 1
         return x_dim, y_dim, x_segments, y_segments
 
-
+    # converts position and block size data to table of filled positions
     @staticmethod
-    def generate_line_alternatives(size, start_pos, line):
-        no_of_filled = sum(line)
+    def pos_to_table(pos_list, block_size, size):
+        table = [0]*size
+        for x in range(0,len(pos_list)):
+            for i in range(1,block_size[x]+1):
+                if table[pos_list[x]+i-1] == 1:
+                    raise Exception()
+                table[pos_list[x]+i-1] = 1
+        return table
+
+    # reruns the domain constraint algorithm and return an updated  changed_line
+    @staticmethod
+    def rerun(updated_line, changing_line,x_cross,y_cross):
+        return
+
+    # Generates all possible line alternatives based on segment size informantion
+    @staticmethod
+    def generate_line_alternatives(size, start_pos, segment_sizes):
+        no_of_filled = sum(segment_sizes)
         no_of_white = size - no_of_filled
-        no_of_blocks = len(line)
+        no_of_blocks = len(segment_sizes)
         freedom_of_first_block = size-no_of_filled-no_of_blocks+1+1
 
         alternatives = []
-        if len(line) == 1:
+        if len(segment_sizes) == 1:
             alternatives = []
-            for x in range(0,size-line[0]+1):
-                alternatives.append(x+start_pos)
+            for x in range(0, size-segment_sizes[0]+1):
+                alternatives.append([x+start_pos])
             return alternatives
         else:
             for x in range(0,freedom_of_first_block):
-                temp_alternatives = Nonogram.generate_line_alternatives(size-line[0]-1-x,start_pos+line[0]+1+x,line[1:])
+                temp_alternatives = Nonogram.generate_line_alternatives(size - segment_sizes[0] - 1 - x, start_pos + segment_sizes[0] + 1 + x, segment_sizes[1:])
                 for alternative in temp_alternatives:
                     if isinstance(alternative,int):
                         alternatives.append([x+start_pos,alternative])
