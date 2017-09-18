@@ -1,4 +1,11 @@
+import json
+from copy import deepcopy
 
+class VariableDomainEmptyException(Exception):
+    pass
+
+class DomainNotChangedException(Exception):
+    pass
 
 class Nonogram():
     x_dim = 0
@@ -8,6 +15,18 @@ class Nonogram():
 
     def __init__(self,path):
         self.x_dim,self.y_dim,self.x_segments,self.y_segments = self.load_file(path)
+
+    @staticmethod
+    def id_to_table(id):
+        return json.loads(id)[0], json.loads(id)[1]
+
+    @staticmethod
+    def table_to_id(row_table,column_table):
+        return json.dumps([row_table,column_table])
+
+    @staticmethod
+    def column(matrix, i):
+        return [row[i] for row in matrix]
 
     @staticmethod
     def load_file(path):
@@ -36,10 +55,70 @@ class Nonogram():
                 table[pos_list[x]+i-1] = 1
         return table
 
-    # reruns the domain constraint algorithm and return an updated  changed_line
+    # reruns the domain constraint algorithm and return an updated  changed_line. This version calculates the entire line and not only one field, might be usefull later on
     @staticmethod
-    def rerun(updated_line, changing_line,x_cross,y_cross):
-        return
+    def rerun(pos_ul, block_size_ul, size_ul, pos_cl, block_size_cl, size_cl, ul_cross, cl_cross):
+        if len(block_size_cl) != len(pos_cl) or len(block_size_ul) != len(pos_ul):
+            raise ValueError("position and block size did not have the same number of variables")
+        master = None
+        #check if ul has a defined value for the crossover field, if not, raise an exception indicating that
+        for line_alternative in pos_ul:
+            alternative = Nonogram.pos_to_table(line_alternative,block_size_ul,size_ul)
+            if master is None:
+                master = alternative[ul_cross]
+            if master != alternative[ul_cross]:
+                raise DomainNotChangedException()
+
+        #clear cl domain from values that does not match the locked common value
+        i =0
+        while i < len(pos_cl):
+            line = Nonogram.pos_to_table(pos_cl[i],block_size_cl,size_cl)
+            if line[cl_cross] != master:
+                del pos_cl[i]
+            i += 1
+
+        #if domain becomes empty raise an error
+        if len(pos_cl) == 0:
+            raise VariableDomainEmptyException()
+        return pos_cl
+
+
+    def rerun_all(self, line, table):
+        queue = []
+        #initialize queue
+        for i in range(0,self.x_dim):
+            queue.append((self.rerun(), table[line], self.x_segments, self.x_dim, self.column(table, i), self.y_segments, self.y_dim,
+             i, line)
+        while len(queue) != 0:
+            try:
+                t = queue.pop(0)
+                t[0](*t[1:])
+                
+            except DomainNotChangedException:
+                continue
+
+
+    def generate_successors(self, id):
+        row_table, col_table = self.id_to_table(id)
+        i = 0
+        children = []
+        # find first row with domain larger than 1
+        while i < len(row_table):
+            if len(row_table[i]) != 1:
+                break
+            i += 1
+        # add all possible children for that row to child set.
+        for j in range(0, len(row_table[i])):
+            child = deepcopy(row_table)
+            child[i] = row_table[i][j]
+            children.append(deepcopy(child))
+        # run rerun on all children
+        for child in children:
+            try:
+                child = Nonogram.rerun_all(i, child)
+            except VariableDomainEmptyException:
+                children.remove(child)
+        return children
 
     # Generates all possible line alternatives based on segment size informantion
     @staticmethod
@@ -66,6 +145,11 @@ class Nonogram():
                         alternatives.append(alternative)
         return alternatives
 
+
+
+
+
+
     @staticmethod
     def generate_line_alternatives_backup(size, line):
         no_of_filled = sum(line)
@@ -89,3 +173,20 @@ class Nonogram():
                     else:
                         alternatives.append(alternative.insert(0,x))
         return alternatives
+
+
+    # reruns the domain constraint algorithm and return an updated  changed_line. This version calculates the entire line and not only one field, might be usefull later on
+    @staticmethod
+    def rerun_backup(pos_ul, block_size_ul, size_ul, pos_cl, block_size_cl, size_cl, x_cross, y_cross):
+        master_line = None
+        for line_alternative in pos_ul:
+            alternative = Nonogram.pos_to_table(line_alternative,block_size_ul,size_ul)
+            if master_line is None:
+                master_line = alternative
+            for i in range(0,size_ul):
+                if master_line[i] != alternative[i]:
+                    master_line[i] = 2
+        # Todo comparison to cl to check if match
+        return
+
+
