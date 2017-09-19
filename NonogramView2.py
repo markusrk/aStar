@@ -40,12 +40,14 @@ clock = pygame.time.Clock()
 
 
 #code for setting up a board
-
-n = Nonogram('Nonogram_boards/priv-test3.txt')
+i = 0
+filename = 'Nonogram_boards/nono-cat.txt'
+n = Nonogram(filename)
+x1, x2, x_segment, y_segment = Nonogram.load_file(filename)
 a = A
-boards = a.run(a,'Nonogram_boards/priv-test3.txt')
-for board in boards:
-    board = n.calculate_locked_table(n.id_to_table(board))
+boards = a.run(a,n)
+for x in range(len(boards)):
+    boards[x] = n.calculate_locked_table(n.id_to_table(boards[x])[0],n.id_to_table(boards[x])[1])
 
 
 def draw_board(x_segments, y_segments, table):
