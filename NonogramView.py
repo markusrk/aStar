@@ -45,7 +45,7 @@ boards = []
 n = Nonogram('Nonogram_boards/nono-cat.txt')
 boards, useless = n.generate_tables()
 for i in range(0,len(boards)):
-    boards[i] = n.pos_to_table(boards[i][0],n.x_segments[i],n.x_dim)
+    boards[i] = n.pos_to_line(boards[i][0], n.x_segments[i], n.x_dim)
 i = 0
 for i in range(0,len(boards)):
     print(boards[i])

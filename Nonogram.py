@@ -54,7 +54,7 @@ class Nonogram():
 
     # converts position and block size data to table of filled positions
     @staticmethod
-    def pos_to_table(pos_list, block_size, size):
+    def pos_to_line(pos_list, block_size, size):
         table = [0] * size
         for x in range(0, len(pos_list)):
             for i in range(1, block_size[x] + 1):
@@ -65,9 +65,9 @@ class Nonogram():
 
     @staticmethod
     def calculate_locked_fields(lines, segments, size):
-        master_line = Nonogram.pos_to_table(lines[0], segments, size)
+        master_line = Nonogram.pos_to_line(lines[0], segments, size)
         for i in range(1, len(lines)):
-            line_alternative = Nonogram.pos_to_table(lines[i], segments, size)
+            line_alternative = Nonogram.pos_to_line(lines[i], segments, size)
             for j in range(0, size):
                 if master_line[j] != line_alternative[j]:
                     master_line[j] = 2
@@ -96,17 +96,22 @@ class Nonogram():
 
 
     def rerun_all(self, row_table, col_table, line_no, orientation):
+        # Make locked table
         locked_table = []
         for i in range(self.y_dim):
             locked_table.insert(i,[])
             for j in range(self.x_dim):
                 locked_table[i].insert(j,0)
+        #update locked table
         locked_table = self.calculate_locked_table(locked_table, row_table, col_table)
+        # add all columns or rows to the queue
         queue = []
-        # add all columns to the queue
         if orientation == 0:
-            for i in range(0, self.y_dim):
+            for i in range(0, self.x_dim):
                 queue.append((1, i))
+        if orientation == 1:
+            for i in range(0, self.y_dim):
+                queue.append((0, i))
 
         # pop a line and an orientation from the queue and check if any of the row/col alternatives break the locked_table cell values
         # if it does, then remove that alternative and set a changed flag so we can recalculate the locked table and add elements to the queue
@@ -114,29 +119,42 @@ class Nonogram():
             orientation, i = queue.pop(0)
             changed = False
             if orientation == 0:
-                for x in range(0, len(row_table[i])):
-                    line_alternative = Nonogram.pos_to_table(row_table[i][x], self.x_segments, self.x_dim)
+                x = 0
+                while x < len(row_table[i]):
+                    add_1_to_x = True
+                    line_alternative = Nonogram.pos_to_line(row_table[i][x], self.x_segments[i], self.x_dim)
                     for j in range(0, self.x_dim):
                         if locked_table[i][j] != 2 and locked_table[i][j] != line_alternative[j]:
-                            row_table.remove[i][x]
+                            row_table[i].pop(x)
                             changed = True
+                            add_1_to_x = False
+                            break
+                    if  add_1_to_x: x += 1
+                if len(row_table[i]) == 0: raise VariableDomainEmptyException
                 if changed:
-                    locked_line = Nonogram.calculate_locked_fields(row_table[i], self.x_segments, self.x_dim)
+                    locked_line = Nonogram.calculate_locked_fields(row_table[i], self.x_segments[i], self.x_dim)
                     locked_table[i] = locked_line
                     for j in range(0,self.x_dim):
-                        queue.append(1,j)
+                        queue.append((1,j))
             if orientation == 1:
-                for x in range(0, len(col_table[i])):
-                    line_alternative = Nonogram.pos_to_table(col_table[i][x], self.y_segments, self.y_dim)
+                x = 0
+                while x < len(col_table[i]):
+                    add_1_to_x = True
+                    line_alternative = Nonogram.pos_to_line(col_table[i][x], self.y_segments[i], self.y_dim)
                     for j in range(0, self.y_dim):
                         if locked_table[j][i] != 2 and locked_table[j][i] != line_alternative[j]:
-                            col_table.remove[i][x]
+                            col_table[i].pop(x)
                             changed = True
+                            add_1_to_x = False
+                            break
+                    if not add_1_to_x: x += 1
+                if len(col_table[i]) == 0: raise VariableDomainEmptyException
                 if changed:
-                    locked_line = Nonogram.calculate_locked_fields(col_table[i], self.y_segments, self.y_dim)
+                    locked_line = Nonogram.calculate_locked_fields(col_table[i], self.y_segments[i], self.y_dim)
                     for j in range(0,self.y_dim):
-                        queue.append(0,j)
+                        queue.append((0,j))
                         locked_table[j][i] = locked_line[j]
+        return row_table, col_table
 
     def generate_successors(self, id):
         row_table, col_table = self.id_to_table(id)

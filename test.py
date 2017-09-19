@@ -25,8 +25,20 @@ for i in range(y_dim):
         locked_table[i].insert(j, 0)
 
 p = n.calculate_locked_table(locked_table,row_table,col_table)
+
 for line in p:
     print(line)
+
+
+row_table, col_table = n.rerun_all(row_table,col_table,0,1)
+print()
+print()
+for x in range(y_dim):
+    print(p[x])
+    print((row_table[x]))
+    print(x_segment[x])
+print()
+
 
 #block_sizes = [1,1]
 #line_size = 7
