@@ -41,7 +41,7 @@ def id_to_board(id):
     return cars
 
 
-def load_file(filename):
+def make_root_node(filename):
     file = open(filename)
     id = ""
     for line in file:

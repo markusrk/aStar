@@ -40,7 +40,7 @@ i = 0
 #legal_test_boards = board.generate_successors(board.load_file('hard-3.txt'))
 #legal_test_boards.insert(0,board.id_to_board( board.load_file('hard-3.txt')))
 a = A
-boards = a.run(a)
+boards = a.run(a,'Rushhour_boards/easy-3.txt')
 print(boards)
 
 def draw_board(board):

@@ -25,6 +25,21 @@ class Nonogram():
         self.x_dim, self.y_dim, self.x_segments, self.y_segments = self.load_file(path)
 
     @staticmethod
+    def calculate_h(id):
+        row_table, col_table = Nonogram.id_to_table(id)
+        h = 0
+        for row in row_table:
+            h += len(row)-1
+        for col in col_table:
+            h += len(col)-1
+        return h
+
+    @staticmethod
+    def make_root_node():
+        return Nonogram.table_to_id(Nonogram.generate_tables())
+
+
+    @staticmethod
     def id_to_table(id):
         return json.loads(id)[0], json.loads(id)[1]
 

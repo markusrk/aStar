@@ -12,9 +12,9 @@ class A():
     no_of_moves = 0
     max_size_search_tree = 0
 
-    def run(self):
+    def run(self,filename):
         # todo load code
-        root_node = Node(wrapper.load_file('medium-1.txt'), True)
+        root_node = Node(wrapper.make_root_node(filename), True)
         self.opened.append(root_node)
         self.all_nodes.update({root_node.id:root_node})
 
