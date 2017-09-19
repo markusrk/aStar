@@ -19,7 +19,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
-color_scheme = [GREEN, WHITE]
+color_scheme = [WHITE,GREEN]
 
 
 pygame.init()
@@ -37,9 +37,23 @@ done = False
 clock = pygame.time.Clock()
 
 
+#code for setting up a board
+x1, x2, x_segment, y_segment = Nonogram.load_file("Nonogram_boards/nono-cat.txt")
+
+
+boards = []
+n = Nonogram('Nonogram_boards/nono-cat.txt')
+boards, useless = n.generate_tables()
+for i in range(0,len(boards)):
+    boards[i] = n.pos_to_table(boards[i][0],n.x_segments[i],n.x_dim)
+i = 0
+for i in range(0,len(boards)):
+    print(boards[i])
+
+
 def draw_board(x_segments, y_segments, table):
-    x_dim = len(x_segments)
-    y_dim = len(y_segments)
+    y_dim = len(x_segments)
+    x_dim = len(y_segments)
     box_size = 50
     border_size = 100
 
@@ -61,21 +75,22 @@ def draw_board(x_segments, y_segments, table):
             pygame.draw.rect(screen, color_scheme[table[y][x]], [x * box_size + border_size, y * box_size + border_size, box_size, box_size])
 
 
+
 # -------- Main Program Loop -----------
 while not done:
     # --- Main event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                i = i - 1
+            if event.key == pygame.K_RIGHT:
+                i = i + 1
 
     # --- Game logic should go here
-    x1, x2, x_segment, y_segment = Nonogram.load_file("Nonogram_boards/nono-cat.txt")
-    board1 = [0,1,0,1,0,1,0,1]
-    board2 = [1,0,1,0,1,0,1,0]
 
-    board = []
-    for x in range(0,x2):
-        board.append(deepcopy(board2))
+
 
     # --- Screen-clearing code goes here
 
@@ -87,7 +102,7 @@ while not done:
     screen.fill(WHITE)
 
     # --- Drawing code should go here
-    draw_board(x_segment,y_segment,board)
+    draw_board(x_segment, y_segment, boards)
 
         # Todo
     # --- Go ahead and update the screen with what we've drawn.
