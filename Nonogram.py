@@ -34,10 +34,23 @@ class Nonogram():
             h += len(col)-1
         return h
 
-    @staticmethod
-    def make_root_node():
-        return Nonogram.table_to_id(Nonogram.generate_tables())
+    def make_root_node(self):
+        row_table, col_table = self.generate_tables()
+        row_table, col_table = self.rerun_all(row_table,col_table,0)
+        return Nonogram.table_to_id(row_table, col_table)
 
+    @staticmethod
+    def arc_cost(parent, child):
+        return 0
+
+    @staticmethod
+    def is_solution(id):
+        row_table, col_table = Nonogram.id_to_table(id)
+        is_solution = True
+        for row in row_table:
+            if len(row) != 1:
+                is_solution = False
+        return is_solution
 
     @staticmethod
     def id_to_table(id):
@@ -65,7 +78,7 @@ class Nonogram():
             else:
                 y_segments.append(list(map(int, line.split(" "))))
             counter += 1
-        #reverse x_segments
+        # reverse x_segments
         x_segments.reverse()
         return x_dim, y_dim, x_segments, y_segments
 
@@ -73,6 +86,7 @@ class Nonogram():
     @staticmethod
     def pos_to_line(pos_list, block_size, size):
         table = [0] * size
+        if isinstance(pos_list, int): pos_list = [pos_list]
         for x in range(0, len(pos_list)):
             for i in range(1, block_size[x] + 1):
                 if table[pos_list[x] + i - 1] == 1:
@@ -90,7 +104,13 @@ class Nonogram():
                     master_line[j] = 2
         return master_line
 
-    def calculate_locked_table(self,locked_table, row_table, col_table):
+    def calculate_locked_table(self, row_table, col_table):
+        # Make locked table and locked row/locked columns tables
+        locked_table = []
+        for i in range(self.y_dim):
+            locked_table.insert(i, [])
+            for j in range(self.x_dim):
+                locked_table[i].insert(j, 0)
         lr_table = []
         lc_table = []
         for i in range(0,self.y_dim):
@@ -111,16 +131,9 @@ class Nonogram():
                     raise NoMatchingPatternsException
         return locked_table
 
-
-    def rerun_all(self, row_table, col_table, line_no, orientation):
-        # Make locked table
-        locked_table = []
-        for i in range(self.y_dim):
-            locked_table.insert(i,[])
-            for j in range(self.x_dim):
-                locked_table[i].insert(j,0)
-        #update locked table
-        locked_table = self.calculate_locked_table(locked_table, row_table, col_table)
+    def rerun_all(self, row_table, col_table, orientation):
+        # update locked table
+        locked_table = self.calculate_locked_table(row_table, col_table)
         # add all columns or rows to the queue
         queue = []
         if orientation == 0:
@@ -185,14 +198,20 @@ class Nonogram():
         # add all possible children for that row to child set.
         for j in range(0, len(row_table[i])):
             child = deepcopy(row_table)
-            child[i] = row_table[i][j]
+            if isinstance(row_table[i][j],int): row_table[i][j] = [row_table[i][j]]
+            child[i] = [row_table[i][j]]
             children.append(deepcopy(child))
         # run rerun on all children
         for child in children:
             try:
-                child = Nonogram.rerun_all(child, col_table, i, 0)
+                child = Nonogram.rerun_all(self, child, deepcopy(col_table), 0)
             except VariableDomainEmptyException:
                 children.remove(child)
+            except ConflictingLocksException:
+                children.remove(child)
+
+        for i in range(len(children)):
+            children[i] = self.table_to_id(children[i],col_table)
         return children
 
     # Generates row and column alternative tables

@@ -1,3 +1,4 @@
+from a import A
 """
  Pygame base template for opening a window
 
@@ -19,7 +20,8 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
-color_scheme = [WHITE,GREEN]
+GRAY = (100, 100, 100)
+color_scheme = [WHITE, GREEN, GRAY]
 
 
 pygame.init()
@@ -38,18 +40,12 @@ clock = pygame.time.Clock()
 
 
 #code for setting up a board
-x1, x2, x_segment, y_segment = Nonogram.load_file("Nonogram_boards/nono-cat.txt")
 
-boards = []
-n = Nonogram('Nonogram_boards/nono-cat.txt')
-row_table,col_table = n.generate_tables()
-boards, col_table = n.rerun_all(row_table,col_table,1)
-
-for i in range(0,len(boards)):
-    boards[i] = n.pos_to_line(boards[i][0], n.x_segments[i], n.x_dim)
-i = 0
-for i in range(0,len(boards)):
-    print(boards[i])
+n = Nonogram('Nonogram_boards/priv-test3.txt')
+a = A
+boards = a.run(a,'Nonogram_boards/priv-test3.txt')
+for board in boards:
+    board = n.calculate_locked_table(n.id_to_table(board))
 
 
 def draw_board(x_segments, y_segments, table):
@@ -103,7 +99,7 @@ while not done:
     screen.fill(WHITE)
 
     # --- Drawing code should go here
-    draw_board(x_segment, y_segment, boards)
+    draw_board(x_segment, y_segment, boards[i])
 
         # Todo
     # --- Go ahead and update the screen with what we've drawn.

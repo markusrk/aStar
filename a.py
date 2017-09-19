@@ -1,5 +1,5 @@
 from Node import Node
-from board import Board as wrapper_class
+
 
 
 
@@ -12,10 +12,9 @@ class A():
     no_of_moves = 0
     max_size_search_tree = 0
 
-    def run(self,filename):
+    def run(self,wrapper):
         # todo load code
-        wrapper = wrapper_class(filename)
-        root_node = Node(wrapper.make_root_node(filename), True)
+        root_node = Node(wrapper.make_root_node(), True, wrapper)
         self.opened.append(root_node)
         self.all_nodes.update({root_node.id:root_node})
 
@@ -66,6 +65,7 @@ class A():
             list_of_nodes.append(self.final_node.id)
             self.final_node = self.final_node.parent
             self.no_of_moves += 1
+        list_of_nodes.append(self.final_node.id)
         print('No of moves = ' + str(self.no_of_moves))
         print('max number of nodes = ' + str(self.max_size_search_tree))
         return list_of_nodes

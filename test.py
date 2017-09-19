@@ -15,22 +15,22 @@ from Nonogram import Nonogram
 #locked_table[5][5] = 1
 #print(locked_table)
 
-n = Nonogram('Nonogram_boards/nono-cat.txt')
-x_dim, y_dim, x_segment, y_segment = Nonogram.load_file("Nonogram_boards/nono-cat.txt")
-row_table, col_table = n.generate_tables()
-locked_table = []
-for i in range(y_dim):
-    locked_table.insert(i, [])
-    for j in range(x_dim):
-        locked_table[i].insert(j, 0)
+#n = Nonogram('Nonogram_boards/priv-test3.txt')
+#x_dim, y_dim, x_segment, y_segment = Nonogram.load_file("Nonogram_boards/priv-test3.txt")
+#row_table, col_table = n.generate_tables()
+#locked_table = []
+#for i in range(y_dim):
+#    locked_table.insert(i, [])
+#    for j in range(x_dim):
+#        locked_table[i].insert(j, 0)
 
-p = n.calculate_locked_table(locked_table,row_table,col_table)
+#p = n.calculate_locked_table(locked_table,row_table,col_table)
 
-for line in p:
-    print(line)
+#for line in p:
+#    print(line)
 
 
-row_table1, col_table = n.rerun_all(row_table,col_table,0,1)
+#row_table1, col_table = n.rerun_all(row_table,col_table,1)
 #print()
 #print()
 #for x in range(y_dim):
@@ -39,6 +39,13 @@ row_table1, col_table = n.rerun_all(row_table,col_table,0,1)
 #    print((row_table[x]))
 #    print(x_segment[x])
 
+
+a = A
+b = Nonogram('Nonogram_boards/priv-test3.txt')
+boards = a.run(a,b)
+for board in boards:
+    board = b.id_to_table(board)[0]
+    print(board)
 
 #block_sizes = [1,1]
 #line_size = 7

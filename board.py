@@ -50,9 +50,9 @@ class Board:
             i += 12
         return cars
 
-    @staticmethod
-    def make_root_node(filename):
-        file = open(filename)
+
+    def make_root_node(self):
+        file = open(self.filename)
         id = ""
         for line in file:
             id = id + line

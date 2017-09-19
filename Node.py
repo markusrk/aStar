@@ -1,11 +1,13 @@
-from board import Board
+
 
 
 class Node:
 
-    wrapper = Board('')
+    wrapper = None
 
-    def __init__(self, id, parent):
+    def __init__(self, id, parent, wrapper=None):
+        if wrapper: self.wrapper = wrapper
+        if self.wrapper == None: raise Exception
         if parent == True:
             self.id = id
             self.g = 0
@@ -29,7 +31,7 @@ class Node:
         successor_ids = self.wrapper.generate_successors(self.id)
         successors = []
         for id in successor_ids:
-            successors.append(Node(id, self))
+            successors.append(Node(id, self, self.wrapper))
         return successors
 
     def calculate_h(self):
