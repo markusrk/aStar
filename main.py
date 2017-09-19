@@ -1,5 +1,5 @@
 import pygame
-import board as wrapper
+from board import Board
 from a import A
 
 pygame.init()
@@ -40,12 +40,12 @@ i = 0
 #legal_test_boards = board.generate_successors(board.load_file('hard-3.txt'))
 #legal_test_boards.insert(0,board.id_to_board( board.load_file('hard-3.txt')))
 a = A
-boards = a.run(a,'Rushhour_boards/easy-3.txt')
+boards = a.run(a,'Rushhour_boards/expert-2.txt')
 print(boards)
 
 def draw_board(board):
     if isinstance(board, str):
-        board = wrapper.id_to_board(board)
+        board = Board.id_to_board(board)
     for x in range(len(board)):
         car = board[x]
         box_size = 50

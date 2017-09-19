@@ -1,8 +1,9 @@
-import board as wrapper
+from board import Board
 
 
 class Node:
 
+    wrapper = Board('')
 
     def __init__(self, id, parent):
         if parent == True:
@@ -25,14 +26,14 @@ class Node:
         parent.children.append(self)
 
     def generate_successors(self):
-        successor_ids = wrapper.generate_successors(self.id)
+        successor_ids = self.wrapper.generate_successors(self.id)
         successors = []
         for id in successor_ids:
             successors.append(Node(id, self))
         return successors
 
     def calculate_h(self):
-        return wrapper.calculate_h(self.id)
+        return self.wrapper.calculate_h(self.id)
 
     def propagate_improvement(self):
         self.g = self.parent.g + self.arc_cost(self.parent)
@@ -45,7 +46,7 @@ class Node:
                 child.propagate_improvement()
 
     def arc_cost(self, node):
-        return wrapper.arc_cost(self, node)
+        return self.wrapper.arc_cost(self, node)
 
     def is_solution(self):
-        return wrapper.is_solution(self.id)
+        return self.wrapper.is_solution(self.id)

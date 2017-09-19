@@ -1,5 +1,5 @@
 from Node import Node
-import board as wrapper
+from board import Board as wrapper_class
 
 
 
@@ -14,6 +14,7 @@ class A():
 
     def run(self,filename):
         # todo load code
+        wrapper = wrapper_class(filename)
         root_node = Node(wrapper.make_root_node(filename), True)
         self.opened.append(root_node)
         self.all_nodes.update({root_node.id:root_node})
