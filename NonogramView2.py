@@ -41,7 +41,7 @@ clock = pygame.time.Clock()
 
 # code for setting up a board
 i = 0
-filename = 'Nonogram_boards/nono-telephone.txt'
+filename = 'Nonogram_boards/nono-fox.txt'
 n = Nonogram(filename)
 x1, x2, x_segment, y_segment = Nonogram.load_file(filename)
 a = A

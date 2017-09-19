@@ -41,7 +41,7 @@ clock = pygame.time.Clock()
 x1, x2, x_segment, y_segment = Nonogram.load_file("Nonogram_boards/nono-cat.txt")
 
 boards = []
-n = Nonogram('Nonogram_boards/nono-cat.txt')
+n = Nonogram('Nonogram_boards/priv-test3.txt')
 row_table,col_table = n.generate_tables()
 boards, col_table = n.rerun_all(row_table,col_table,1)
 
