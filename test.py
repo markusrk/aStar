@@ -30,14 +30,14 @@ for line in p:
     print(line)
 
 
-row_table, col_table = n.rerun_all(row_table,col_table,0,1)
-print()
-print()
-for x in range(y_dim):
-    print(p[x])
-    print((row_table[x]))
-    print(x_segment[x])
-print()
+row_table1, col_table = n.rerun_all(row_table,col_table,0,1)
+#print()
+#print()
+#for x in range(y_dim):
+#    print(p[x])
+#    print(row_table1[x])
+#    print((row_table[x]))
+#    print(x_segment[x])
 
 
 #block_sizes = [1,1]

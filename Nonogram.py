@@ -50,6 +50,8 @@ class Nonogram():
             else:
                 y_segments.append(list(map(int, line.split(" "))))
             counter += 1
+        #reverse x_segments
+        x_segments.reverse()
         return x_dim, y_dim, x_segments, y_segments
 
     # converts position and block size data to table of filled positions
@@ -135,7 +137,7 @@ class Nonogram():
                     locked_line = Nonogram.calculate_locked_fields(row_table[i], self.x_segments[i], self.x_dim)
                     locked_table[i] = locked_line
                     for j in range(0,self.x_dim):
-                        queue.append((1,j))
+                        if (1,j) not in queue: queue.append((1,j))
             if orientation == 1:
                 x = 0
                 while x < len(col_table[i]):
@@ -147,12 +149,12 @@ class Nonogram():
                             changed = True
                             add_1_to_x = False
                             break
-                    if not add_1_to_x: x += 1
+                    if add_1_to_x: x += 1
                 if len(col_table[i]) == 0: raise VariableDomainEmptyException
                 if changed:
                     locked_line = Nonogram.calculate_locked_fields(col_table[i], self.y_segments[i], self.y_dim)
                     for j in range(0,self.y_dim):
-                        queue.append((0,j))
+                        if (0, j) not in queue: queue.append((0, j))
                         locked_table[j][i] = locked_line[j]
         return row_table, col_table
 
