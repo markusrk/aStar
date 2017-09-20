@@ -1,6 +1,6 @@
 import pygame
-from board import Board
-from a import A
+from Rushhour import Board
+from A import A
 
 filename = "Rushhour_boards/" + input("write test name: ") +".txt"
 
@@ -32,12 +32,14 @@ pygame.display.set_caption("My Game")
 
 # Loop until the user clicks the close button.
 done = False
+play = False
 
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
 # load some boards, only for testing
 i = 0
+x = 0
 
 #legal_test_boards = board.generate_successors(board.load_file('hard-3.txt'))
 #legal_test_boards.insert(0,board.id_to_board( board.load_file('hard-3.txt')))
@@ -101,8 +103,15 @@ while not done:
                 i = i + 1
             if event.key == pygame.K_ESCAPE:
                 done = True
+            if event.key == pygame.K_UP:
+                x = x + 1
+            if event.key == pygame.K_DOWN:
+                x = x - 1
+            if event.key == pygame.K_p:
+                play = True
+    if play: i += 1
 
-    draw_board(boards[i])
+    draw_board(boards[x][i])
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
 

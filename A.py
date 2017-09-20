@@ -6,6 +6,7 @@ from Node import Node
 class A():
     closed = {}
     opened = []
+    search_order = []
     all_nodes = {} #except root
     iw = None
     final_node = "not filled yet"
@@ -30,7 +31,7 @@ class A():
                 # pop node from open and check if it is a solution
                 current_node = self.opened.pop(0)
                 self.closed.update({current_node.id:current_node})
-                if len(self.closed) > self.max_size_search_tree: self.max_size_search_tree = len(self.closed)
+                self.search_order.append(current_node.id)
                 if current_node.is_solution():
                     self.final_node = current_node
                     break
@@ -67,8 +68,8 @@ class A():
             self.no_of_moves += 1
         list_of_nodes.append(self.final_node.id)
         print('No of moves = ' + str(self.no_of_moves))
-        print('max number of nodes = ' + str(self.max_size_search_tree))
-        return list_of_nodes
+        print('No of nodes explored = ' + str(len(self.closed)))
+        return list_of_nodes, self.search_order
 
 
     def find_identical(self,node):

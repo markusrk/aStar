@@ -1,5 +1,5 @@
-import board
-from a import A
+import Rushhour
+from A import A
 import Node
 from copy import deepcopy
 from Nonogram import Nonogram

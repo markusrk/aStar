@@ -1,4 +1,4 @@
-from a import A
+from A import A
 """
  Pygame base template for opening a window
 
@@ -45,7 +45,7 @@ i = 0
 n = Nonogram(filename)
 x1, x2, x_segment, y_segment = Nonogram.load_file(filename)
 a = A
-boards = a.run(a,n)
+boards, search_order = a.run(a,n)
 for x in range(len(boards)):
     boards[x] = n.calculate_locked_table(n.id_to_table(boards[x])[0],n.id_to_table(boards[x])[1])
 
