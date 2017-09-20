@@ -46,7 +46,6 @@ x = 0
 a = A
 b = Board(filename)
 boards = a.run(a,b)
-print(boards)
 
 def draw_board(board):
     if isinstance(board, str):
