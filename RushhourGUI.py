@@ -109,7 +109,7 @@ while not done:
             if event.key == pygame.K_p:
                 play = True
     if play and i != len(boards[x])-1: i += 1
-    elif i == len(boards[x]) or -i == len(boards[x]): i = 0
+    if i == len(boards[x]) or -i == len(boards[x]): i = 0
 
     draw_board(boards[x][i])
     # --- Go ahead and update the screen with what we've drawn.

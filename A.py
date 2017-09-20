@@ -71,8 +71,8 @@ class A():
             self.no_of_moves += 1
         list_of_nodes.append(self.final_node.id)
         print('No of moves = ' + str(self.no_of_moves))
-        print('No of nodes explored = ' + str(len(self.closed)))
-        print('no of nodes generated = ' + str(len(self.all_nodes)))
+        print('No of nodes expanded = ' + str(len(self.closed)))
+        print('No of nodes generated = ' + str(len(self.all_nodes)))
         return list_of_nodes, self.search_order
 
 

@@ -41,14 +41,16 @@ clock = pygame.time.Clock()
 
 # code for setting up a board
 i = 0
+c = 0
 
 n = Nonogram(filename)
 x1, x2, x_segment, y_segment = Nonogram.load_file(filename)
 a = A
-boards, search_order = a.run(a,n)
-for x in range(len(boards)):
-    boards[x] = n.calculate_locked_table(n.id_to_table(boards[x])[0],n.id_to_table(boards[x])[1])
-
+boards = a.run(a,n)
+for x in range(len(boards[0])):
+    boards[0][x] = n.calculate_locked_table(n.id_to_table(boards[0][x])[0],n.id_to_table(boards[0][x])[1])
+for x in range(len(boards[1])):
+    boards[1][x] = n.calculate_locked_table(n.id_to_table(boards[1][x])[0],n.id_to_table(boards[1][x])[1])
 
 def draw_board(x_segments, y_segments, table):
     y_dim = len(x_segments)
@@ -88,6 +90,10 @@ while not done:
                 i = i + 1
             if event.key == pygame.K_ESCAPE:
                 done = True
+            if event.key == pygame.K_UP:
+                c = 1
+            if event.key == pygame.K_DOWN:
+                c = 0
     # --- Game logic should go here
 
 
@@ -102,7 +108,7 @@ while not done:
     screen.fill(WHITE)
 
     # --- Drawing code should go here
-    draw_board(x_segment, y_segment, boards[i])
+    draw_board(x_segment, y_segment, boards[c][i])
 
         # Todo
     # --- Go ahead and update the screen with what we've drawn.
