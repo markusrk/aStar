@@ -103,12 +103,13 @@ while not done:
             if event.key == pygame.K_ESCAPE:
                 done = True
             if event.key == pygame.K_UP:
-                x = x + 1
+                x = 1
             if event.key == pygame.K_DOWN:
-                x = x - 1
+                x = 0
             if event.key == pygame.K_p:
                 play = True
-    if play: i += 1
+    if play and i != len(boards[x])-1: i += 1
+    elif i == len(boards[x]) or -i == len(boards[x]): i = 0
 
     draw_board(boards[x][i])
     # --- Go ahead and update the screen with what we've drawn.
