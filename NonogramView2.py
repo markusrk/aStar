@@ -23,7 +23,7 @@ RED = (255, 0, 0)
 GRAY = (100, 100, 100)
 color_scheme = [WHITE, GREEN, GRAY]
 
-
+filename = "Nonogram_boards/nono-"+input("write filename: ")+".txt"
 pygame.init()
 
 # Set the width and height of the screen [width, height]
@@ -41,7 +41,7 @@ clock = pygame.time.Clock()
 
 # code for setting up a board
 i = 0
-filename = 'Nonogram_boards/nono-fox.txt'
+
 n = Nonogram(filename)
 x1, x2, x_segment, y_segment = Nonogram.load_file(filename)
 a = A
@@ -86,7 +86,8 @@ while not done:
                 i = i - 1
             if event.key == pygame.K_RIGHT:
                 i = i + 1
-
+            if event.key == pygame.K_ESCAPE:
+                done = True
     # --- Game logic should go here
 
 

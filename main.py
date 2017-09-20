@@ -2,6 +2,8 @@ import pygame
 from board import Board
 from a import A
 
+filename = "Rushhour_boards/" + input("write test name: ") +".txt"
+
 pygame.init()
 
 BLACK = (0, 0, 0)
@@ -40,7 +42,7 @@ i = 0
 #legal_test_boards = board.generate_successors(board.load_file('hard-3.txt'))
 #legal_test_boards.insert(0,board.id_to_board( board.load_file('hard-3.txt')))
 a = A
-b = Board('Rushhour_boards/priv-4.txt')
+b = Board(filename)
 boards = a.run(a,b)
 print(boards)
 
@@ -97,6 +99,8 @@ while not done:
                 i = i - 1
             if event.key == pygame.K_RIGHT:
                 i = i + 1
+            if event.key == pygame.K_ESCAPE:
+                done = True
 
     draw_board(boards[i])
     # --- Go ahead and update the screen with what we've drawn.
