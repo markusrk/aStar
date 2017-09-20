@@ -21,6 +21,9 @@ class Node:
             self.children = []
 
     def attach_and_eval(self, parent):
+        if self == parent:
+            print('parent child match removed')
+            return
         self.h = self.calculate_h()
         self.g = parent.g + self.arc_cost(parent)
         self.f = self.h + self.g
@@ -44,6 +47,7 @@ class Node:
             return
         else:
             for child in self.children:
+                if child == self: raise ChildProcessError
                 arc_cost = self.arc_cost(child)
                 child.propagate_improvement()
 

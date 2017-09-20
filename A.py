@@ -1,6 +1,8 @@
 from Node import Node
 
 
+class IdenticalSuccessorException(Exception):
+    pass
 
 
 class A():
@@ -42,8 +44,9 @@ class A():
 
                     # if successor does not exist, insert it in open and attach to parent
                     if successor.id not in self.all_nodes:
-                        if successor.id == current_node.id:
+                        if successor == current_node:
                             print("we have trouble")
+                            raise IdenticalSuccessorException
                         successor.attach_and_eval(current_node)
                         self.opened.append(successor)
                         self.all_nodes.update({successor.id:successor})
@@ -69,6 +72,7 @@ class A():
         list_of_nodes.append(self.final_node.id)
         print('No of moves = ' + str(self.no_of_moves))
         print('No of nodes explored = ' + str(len(self.closed)))
+        print('no of nodes generated = ' + str(len(self.all_nodes)))
         return list_of_nodes, self.search_order
 
 

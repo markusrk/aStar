@@ -195,6 +195,13 @@ class Nonogram():
             if len(row_table[i]) != 1:
                 break
             i += 1
+        smallest_segment = 100000
+        smallest_segment_i_value = 0
+        for c in range(len(row_table)):
+            if 1 < len(row_table[c]) < smallest_segment:
+                smallest_segment = len(row_table[c])
+                smallest_segment_i_value = c
+        i = smallest_segment_i_value
         # add all possible children for that row to child set.
         for j in range(0, len(row_table[i])):
             child = deepcopy(row_table)
