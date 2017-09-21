@@ -6,6 +6,11 @@ class IdenticalSuccessorException(Exception):
 
 
 class A():
+
+    import sys
+
+    sys.setrecursionlimit(1000000)
+
     closed = {}
     opened = []
     search_order = []
@@ -54,6 +59,7 @@ class A():
                     # if successor does exist, update distance and parent
                     else:
                         identical_node = self.find_identical(self,successor)
+                        if identical_node == current_node: raise ChildProcessError
                         if identical_node.g < current_node.g + current_node.arc_cost(identical_node):
                             continue
                         else:

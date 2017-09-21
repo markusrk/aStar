@@ -2,6 +2,9 @@
 
 
 class Node:
+    import sys
+
+    sys.setrecursionlimit(1000000)
 
     wrapper = None
 
@@ -43,6 +46,7 @@ class Node:
     def propagate_improvement(self):
         self.g = self.parent.g + self.arc_cost(self.parent)
         self.f = self.g + self.h
+        if self == self.parent: raise ChildProcessError
         if not self.children:
             return
         else:

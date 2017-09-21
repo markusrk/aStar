@@ -3,6 +3,10 @@ from copy import deepcopy
 class Board:
     filename = ''
 
+    import sys
+
+    sys.setrecursionlimit(1000000)
+
     def __init__(self, filename):
         self.filename = filename
 

@@ -2,6 +2,10 @@ import pygame
 from Rushhour import Board
 from A import A
 
+import sys
+
+sys.setrecursionlimit(1000000)
+
 filename = "Rushhour_boards/" + input("write test name: ") +".txt"
 
 pygame.init()
